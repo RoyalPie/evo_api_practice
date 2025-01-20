@@ -1,5 +1,9 @@
 import java.io.*;
 import java.net.*;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
 
 class httpUrlRequest {
     public static String sendGET(String urlToSend) throws Exception{
@@ -47,12 +51,38 @@ class httpUrlRequest {
 }
 
 class httpClient{
+    public static HttpResponse<String> sendGET(String urlToSend) throws Exception {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(urlToSend))
+                .build();
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        System.out.println("response body: " + response.body());
+        return response;
+    }
 
+    public static void export(HttpResponse<String> response){
+        try {
+            String dirName = "C:\\Users\\Hello\\IdeaProjects\\API_Java_Test";
+
+            String fileName = "albumsClient.txt";
+            File dir = new File (dirName);
+            File actualFile = new File (dir, fileName);
+            FileWriter myWriter = new FileWriter(actualFile);
+            myWriter.write(response.body());
+            myWriter.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
 }
 public class Main {
     public static void main(String[] args) throws Exception {
-        String json = httpUrlRequest.sendGET("https://jsonplaceholder.typicode.com/albums");
-        httpUrlRequest.export(json);
-
+//        String json = httpUrlRequest.sendGET("https://jsonplaceholder.typicode.com/albums");
+//        httpUrlRequest.export(json);
+        HttpResponse<String> res = httpClient.sendGET("https://jsonplaceholder.typicode.com/albums");
+        httpClient.export(res);
     }
 }
