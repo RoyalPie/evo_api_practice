@@ -3,6 +3,10 @@ import java.net.*;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.sql.Time;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.Date;
 
 
 class httpUrlRequest {
@@ -78,11 +82,19 @@ class httpClient{
         }
     }
 }
+interface Test {
+    public String sayHello();
+}
+
 public class Main {
     public static void main(String[] args) throws Exception {
 //        String json = httpUrlRequest.sendGET("https://jsonplaceholder.typicode.com/albums");
 //        httpUrlRequest.export(json);
-        HttpResponse<String> res = httpClient.sendGET("https://jsonplaceholder.typicode.com/albums");
-        httpClient.export(res);
+//        HttpResponse<String> res = httpClient.sendGET("https://jsonplaceholder.typicode.com/albums");
+//        httpClient.export(res);
+        Duration threeHours = Duration.ofHours(3);
+        Time time = Time.valueOf("09/01/2012");
+        System.out.println(time);
+
     }
 }
